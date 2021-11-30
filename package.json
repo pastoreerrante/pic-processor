@@ -2,16 +2,24 @@
   "name": "pic-processor",
   "version": "1.0.0",
   "description": "api to dynamically resize images in the browser. If an image has already been processed, it gets served from a local cache",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx tsc",
+    "start": "nodemon src/index.ts",
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
+    "format": "prettier --config .prettierrc --ignore-path .gitignore --write 'src/**/*.+(js|ts|json)'"
   },
   "author": "Daniele Visaggio",
   "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
     "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.5.0"
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
   }
 }
