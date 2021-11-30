@@ -1,0 +1,11 @@
+{
+  "name": "pic-processor",
+  "version": "1.0.0",
+  "description": "api to dynamically resize images in the browser. If an image has already been processed, it gets served from a local cache",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniele Visaggio",
+  "license": "MIT"
+}
