@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            display: flex;
+            /* aligns the items horizontally if flex-direction is row (default) */
+            justify-content: center;
+            /* aligns the items vertically along the cross-axis */
+            align-items: center;
+            /* if we don't set container's height to 100% of the viewport, vertically align does not happen */
+            height: 100vh;
+            background-color: lightgray;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <% if (locals.photoName) { %>
+            <img src="http://localhost:3000/<%= photoName %>" alt="resized photo">
+        <% } else { %>  
+            <h2>Unable to open photo. Please double check photo name and photo path</h2>
+        <% } %>
+    </div>
+</body>
+
+</html>
