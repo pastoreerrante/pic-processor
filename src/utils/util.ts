@@ -6,7 +6,7 @@ const listPhotos = async (photoPath: string): Promise<string[]> => {
   return photos;
 };
 
-const findPhotoExt = async (
+const findPhotoExtension = async (
   filename: string,
   photoPath: string
 ): Promise<string> => {
@@ -25,15 +25,16 @@ const openPhoto = async (
   filename: string,
   photoPath: string
 ): Promise<[Buffer, string]> => {
-  console.log(
-    `inside openPhoto | filename: ${filename}, photoPath: ${photoPath}`
-  );
   // ${filename} is end-user input and typically lacks photo extension;
-  // findPhotoExt() looks in the given ${photoPath}, list files and try to
+  // findPhotoExtension() looks in the given ${photoPath}, list files and try to
   // to find ${filename} among them.
   // If found, return photo file name + extension, else undefined
-  const photo = await findPhotoExt(filename, photoPath);
-  console.log(`inside openPhoto | photo: ${photo}`);
+  const photo = await findPhotoExtension(filename, photoPath);
+  if (!photo) {
+    throw new Error(
+      `Unable to find a photo called ${filename} in ${photoPath}`
+    );
+  }
   const openFile = await fs.readFile(path.join(photoPath, photo));
   // we need to give back to the caller the photo extension,
   // since photo extension is not known at the caller site
@@ -41,4 +42,4 @@ const openPhoto = async (
   return [openFile, photoExtension];
 };
 
-export { openPhoto, findPhotoExt as findPhotoInCache };
+export { openPhoto, findPhotoExtension as findPhotoInCache, listPhotos };
