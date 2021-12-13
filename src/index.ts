@@ -12,7 +12,7 @@ const thumbPhotoPath = path.join(process.cwd(), 'asset', 'thumb');
 
 app.set('view engine', 'ejs');
 
-app.get('/api/images', async (req: Request, res: Response) => {
+app.get('/api/images', async (req: Request, res: Response): Promise<void> => {
   const filename = req.query.filename as unknown as string;
   const width = req.query.width as unknown as number;
   const height = req.query.height as unknown as number;
@@ -30,10 +30,13 @@ app.get('/api/images', async (req: Request, res: Response) => {
         path.join(thumbPhotoPath, `${resizedPicName}${extension}`)
       );
       res.sendFile(`${resizedPicName}${extension}`, { root: thumbPhotoPath });
-    } catch (err) {
-      console.log(err);
-      res.status(404);
-      res.render('index');
+    } catch (error) {
+      let message;
+      if (error instanceof Error) message = error.message;
+      message?.includes('Unable to find a photo')
+        ? res.status(404)
+        : res.status(500);
+      res.render('index', { error: message });
     }
   }
 });
