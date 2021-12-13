@@ -1,9 +1,8 @@
 import * as path from 'path';
 import express from 'express';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import sharp from 'sharp';
 
-//import { openPhoto, findPhotoExt as findPhotoInCache } from './utils/util';
 import { openPhoto, findPhotoInCache } from './utils/util';
 
 const app = express();
@@ -21,25 +20,16 @@ app.get('/api/images', async (req: Request, res: Response) => {
 
   const photo = await findPhotoInCache(resizedPicName, thumbPhotoPath);
   if (photo) {
-    console.log(`cache hit! photo in cache: ${photo}`);
-    res.sendFile(photo, {
-      root: thumbPhotoPath
-    });
+    res.sendFile(photo, { root: thumbPhotoPath });
   } else {
     try {
       const [photoBuffer, extension] = await openPhoto(filename, fullPhotoPath);
-      // console.log(`extension: ${extension}`);
-      sharp(photoBuffer)
-        .resize({
-          width: +width,
-          height: +height
-        })
-        .toFile(path.join(thumbPhotoPath, `${resizedPicName}${extension}`))
-        .then(() => {
-          res.sendFile(`${resizedPicName}${extension}`, {
-            root: thumbPhotoPath
-          });
-        });
+      const image = sharp(photoBuffer);
+      const resized = image.resize({ width: +width, height: +height });
+      await resized.toFile(
+        path.join(thumbPhotoPath, `${resizedPicName}${extension}`)
+      );
+      res.sendFile(`${resizedPicName}${extension}`, { root: thumbPhotoPath });
     } catch (err) {
       console.log(err);
       res.status(404);
@@ -51,3 +41,5 @@ app.get('/api/images', async (req: Request, res: Response) => {
 app.listen(port, '0.0.0.0', () => {
   console.log(`server started at localhost:${port}`);
 });
+
+export default app;
