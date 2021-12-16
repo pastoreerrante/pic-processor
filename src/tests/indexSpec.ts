@@ -3,9 +3,14 @@ import app from '../index';
 
 const request = supertest(app);
 
-describe('Test endpoint responses', () => {
-  it('gets the homepage - 200 OK', async () => {
+describe('Test api endpoint responses', () => {
+  it('gets the app homepage - returns 200 OK', async () => {
     const response = await request.get('/');
+    expect(response.status).toBe(200);
+  });
+
+  it('gets the /api endpoint - returns 200 OK', async () => {
+    const response = await request.get('/api');
     expect(response.status).toBe(200);
   });
 
