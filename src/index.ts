@@ -1,47 +1,22 @@
-import * as path from 'path';
 import express from 'express';
 import { Request, Response } from 'express';
-import sharp from 'sharp';
-
 import routes from './routes/index';
-import { openPhoto, findPhotoInCache } from './utils/util';
 
 const app = express();
 const port = 3000;
-const fullPhotoPath = path.join(process.cwd(), 'asset', 'full');
-const thumbPhotoPath = path.join(process.cwd(), 'asset', 'thumb');
 
 app.set('view engine', 'ejs');
 
-app.use('/', routes);
-app.get('/api/images', async (req: Request, res: Response): Promise<void> => {
-  const filename = req.query.filename as unknown as string;
-  const width = req.query.width as unknown as number;
-  const height = req.query.height as unknown as number;
-  const resizedPicName = `${filename}_W${width}_H${height}`;
-
-  const photo = await findPhotoInCache(resizedPicName, thumbPhotoPath);
-  if (photo) {
-    res.sendFile(photo, { root: thumbPhotoPath });
-  } else {
-    try {
-      const [photoBuffer, extension] = await openPhoto(filename, fullPhotoPath);
-      const image = sharp(photoBuffer);
-      const resized = image.resize({ width: +width, height: +height });
-      await resized.toFile(
-        path.join(thumbPhotoPath, `${resizedPicName}${extension}`)
-      );
-      res.sendFile(`${resizedPicName}${extension}`, { root: thumbPhotoPath });
-    } catch (error) {
-      let errorMessage;
-      if (error instanceof Error) errorMessage = error.message;
-      errorMessage?.includes('Unable to find a photo')
-        ? res.status(404)
-        : res.status(500);
-      res.render('index', { message: errorMessage });
-    }
-  }
+// app home page
+app.get('/', (req: Request, res: Response): void => {
+  res.render('index', {
+    message: `Welcome to pic-processor!
+      Usage: {server_address}/api/images?filename={photoname}&width={number}&height={number}`
+  });
 });
+
+// api live behind the api/ namespace
+app.use('/api', routes);
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`server started at localhost:${port}`);
