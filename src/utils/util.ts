@@ -15,8 +15,10 @@ const findPhotoExtension = async (
   // e.g. [ 'dog.jpg', 'cat.png' ]
   const availablePhotos = await listPhotos(photoPath);
   // if filename is 'dog', photos should be just a list like ['dog.jpg']
+  // if filename is 'dog.jpg', we trim the extension and then compare just names
+  const photoName = path.parse(filename).name;
   const photos = availablePhotos.filter(
-    (photo) => path.parse(photo).name === filename
+    (photo) => path.parse(photo).name === photoName
   );
   return photos[0];
 };
