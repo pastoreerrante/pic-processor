@@ -28,4 +28,10 @@ the main endpoint is:
 
 /api/images
 
-Hitting just / or /api retrieves an help page.
+Query parameters to be appended to /api/images are:
+
+- filename: photo name
+- width: desidered width
+- height: desired height
+
+Hitting just / or /api endpoints retrieves an help page.
