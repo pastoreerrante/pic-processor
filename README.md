@@ -16,9 +16,9 @@ If the same url is GETted more than once, the image will be served from a local 
 pic-processor can be used with the following scripts:
 
 1. npm run build: compile the typescript code
-2. npm run start: check for any changes in the typescript code and dynamically recompile on save.
+2. npm run start: watch for any changes in the typescript code and dynamically recompile on save.
 3. npm run format: run prettier to properly format the code.
-4. npm run lint: run eslint to quality-check the code and suggest possible improvement or fix.
+4. npm run lint: run eslint to quality-check the code and suggest possible improvements or fix.
 5. npm run test: compile the code and run all the test
 6. npm run jasmine: run the test without compiling
 
