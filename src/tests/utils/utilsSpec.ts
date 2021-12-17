@@ -10,8 +10,14 @@ describe('test utilities to handle photos', () => {
     expect(photos).toEqual(jasmine.arrayContaining(['tux.png', 'shells.jpg']));
   });
 
-  it('should find the correct file extension given just the photo file name', async () => {
+  it('should find the correct file extension given just the photo file name without its extension', async () => {
     const fullPhotoName = await findPhotoInCache('shells', fullPhotoPath);
+
+    expect(fullPhotoName).toEqual('shells.jpg');
+  });
+
+  it('should find the correct file extension given the photo file name with its extension', async () => {
+    const fullPhotoName = await findPhotoInCache('shells.jpg', fullPhotoPath);
 
     expect(fullPhotoName).toEqual('shells.jpg');
   });
