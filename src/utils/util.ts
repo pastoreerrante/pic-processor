@@ -1,11 +1,16 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
 
+// list photos inside the given photoPath and return a list of photo names
 const listPhotos = async (photoPath: string): Promise<string[]> => {
   const photos = await fs.readdir(photoPath);
   return photos;
 };
 
+// this function, once exported, is called findPhotoInCache().
+// This is because it can be used not only to find a photo extension
+// string but also as a way to check if a photo is present in a given path
+// that can be used as a cache
 const findPhotoExtension = async (
   filename: string,
   photoPath: string
@@ -20,9 +25,12 @@ const findPhotoExtension = async (
   const photos = availablePhotos.filter(
     (photo) => path.parse(photo).name === photoName
   );
+  // we assume there is just one photo with a given name, i.e. if there are dog.jpg and
+  // dog.png inside full path only the first one will be found and processed.
   return photos[0];
 };
 
+// open the photo and return a list including its content (a Buffer) and its filename
 const openPhoto = async (
   filename: string,
   photoPath: string
@@ -39,7 +47,7 @@ const openPhoto = async (
   }
   const openFile = await fs.readFile(path.join(photoPath, photo));
   // we need to give back to the caller the photo extension,
-  // since photo extension is not known at the caller site
+  // since photo extension can be not known at the caller site
   const photoExtension = path.parse(photo).ext;
   return [openFile, photoExtension];
 };

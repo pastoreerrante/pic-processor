@@ -3,8 +3,10 @@ import { Request, Response } from 'express';
 import routes from './routes/index';
 
 const app = express();
+// http listening port
 const port = 3000;
 
+// use ejs to render html template
 app.set('view engine', 'ejs');
 
 // app home page
