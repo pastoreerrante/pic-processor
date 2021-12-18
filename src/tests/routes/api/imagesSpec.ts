@@ -18,8 +18,8 @@ describe('test actual photo resize', () => {
   // random resize values
   const width = 122;
   const height = 237;
-  const resizedPicName = `${filename}_W${width}_H${height}`;
   const filename = 'tux';
+  const resizedPicName = `${filename}_W${width}_H${height}`;
 
   it('should resize the given photoBuffer and save the resized image inside asset/thumb with the correct dimensions', async () => {
     // open the photo and find its extension
