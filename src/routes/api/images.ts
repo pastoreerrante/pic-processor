@@ -57,7 +57,7 @@ images.get('/', async (req: Request, res: Response): Promise<void> => {
       // extract the error string in a type safe-way
       if (error instanceof Error) errorMessage = error.message;
       errorMessage?.includes('Unable to find a photo')
-        ? res.status(404)  // not found photo
+        ? res.status(404) // not found photo
         : res.status(500); // error processing photo (e.g. width/height missing)
       res.render('index', { message: errorMessage });
     }
