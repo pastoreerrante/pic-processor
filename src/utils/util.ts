@@ -1,5 +1,7 @@
-import { promises as fs } from 'fs';
 import * as path from 'path';
+import { promises as fs } from 'fs';
+import sharp from 'sharp';
+import { thumbPhotoPath } from '../index';
 
 // list photos inside the given photoPath and return a list of photo names
 const listPhotos = async (photoPath: string): Promise<string[]> => {
@@ -52,4 +54,26 @@ const openPhoto = async (
   return [openFile, photoExtension];
 };
 
-export { openPhoto, findPhotoExtension as findPhotoInCache, listPhotos };
+// this is the heart of pic-processor. It takes a photoBuffer,
+// resize it according to width and height and then save it to
+// thumbPhotoPath
+const resizeAndSavePhoto = async (
+  photoBuffer: Buffer,
+  width: number,
+  height: number,
+  photoName: string
+): Promise<void> => {
+  // load the photo into sharp library
+  const image = sharp(photoBuffer);
+  // do the actual resize
+  const resized = image.resize({ width: +width, height: +height });
+  // save the resized to file
+  await resized.toFile(path.join(thumbPhotoPath, `${photoName}`));
+};
+
+export {
+  openPhoto,
+  findPhotoExtension as findPhotoInCache,
+  listPhotos,
+  resizeAndSavePhoto
+};
