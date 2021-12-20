@@ -1,12 +1,10 @@
 import * as path from 'path';
 import { promises as fs } from 'fs';
 import sharp from 'sharp';
-import { openPhoto, listPhotos } from '../../../utils/util';
-import { resizeAndSavePhoto } from '../../../routes/api/images';
+import { openPhoto, listPhotos, resizeAndSavePhoto } from '../../../utils/util';
+import { fullPhotoPath, thumbPhotoPath } from '../../../index';
 
 describe('test actual photo resize', () => {
-  const fullPhotoPath = path.join(process.cwd(), 'asset', 'full');
-  const thumbPhotoPath = path.join(process.cwd(), 'asset', 'thumb');
   // remove any existing resized photo before running test
   beforeAll(async () => {
     const photos = await listPhotos(thumbPhotoPath);
